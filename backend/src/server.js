@@ -9,6 +9,14 @@ dotenv.config();
 
 const app = express();
 const __dirname = path.resolve();
+
+const requiredEnvVars = ["PORT", "MONGO_URI", "JWT_SECRET"];
+requiredEnvVars.forEach((name) => {
+  if (!process.env[name]) {
+    throw new Error(`Missing required environment variable: ${name}`);
+  }
+});
+
 const PORT = process.env.PORT;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

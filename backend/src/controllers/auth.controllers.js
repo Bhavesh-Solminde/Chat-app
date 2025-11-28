@@ -4,6 +4,9 @@ import bcrypt from "bcryptjs";
 
 export async function signupController(req, res) {
   const { fullName, email, password } = req.body;
+  fullName = fullName?.trim();
+  email = email?.trim().toLowerCase();
+  password = password?.trim();
 
   try {
     if (!fullName || !email || !password) {
@@ -20,6 +23,13 @@ export async function signupController(req, res) {
 
     if (!emailRegex.test(email)) {
       return res.status(400).json({ message: "Invalid email format" });
+    }
+
+    if (!process.env.JWT_SECRET) {
+      console.error("JWT_SECRET is not configured in the environment");
+      return res
+        .status(500)
+        .json({ message: "Authentication is temporarily unavailable" });
     }
 
     const confirmUser = await User.findOne({ email });
