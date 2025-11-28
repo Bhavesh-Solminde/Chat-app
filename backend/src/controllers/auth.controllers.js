@@ -3,6 +3,7 @@ import { generateToken } from "../lib/util.js";
 import bcrypt from "bcryptjs";
 import { sendWelcomeEmail } from "../emails/emailHandlers.js";
 import { ENV } from "../lib/env.js";
+import { Profiler } from "react";
 
 export async function signupController(req, res) {
   const { fullname, email, password } = req.body;
@@ -60,9 +61,39 @@ export async function signupController(req, res) {
 }
 
 export async function loginController(req, res) {
-  res.send("login endpoint");
+  const { email, password } = req.body;
+
+  try {
+    if (!email || !password) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ message: "User doesnot exists" }); //never tell that what is incorrect
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid email or password" });
+    }
+    generateToken(user._id, res);
+    res.status(200).json({
+      _id: user._id,
+      fullname: user.fullname,
+      email: user.email,
+      profilePic: user.profilePic,
+    });
+  } catch (error) {
+    console.error("Error in loginController:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 }
 
 export async function logoutController(req, res) {
-  res.send("logout endpoint");
+  res.clearCookie("token", {
+    httpOnly: true,
+    sameSite: "strict",
+    secure: ENV.NODE_ENV === "production",
+  });
+  res.status(200).json({ message: "Logged out successfully" });
 }

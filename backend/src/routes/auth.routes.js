@@ -9,7 +9,7 @@ const Router = express.Router();
 
 Router.post("/signup", signupController);
 
-Router.get("/login", loginController);
-Router.get("/logout", logoutController);
+Router.post("/login", loginController);
+Router.post("/logout", logoutController);
 
 export default Router;
