@@ -1,0 +1,22 @@
+{
+  "name": "chat-app",
+  "version": "1.0.0",
+  "description": "**This a Chat-app made using socket.io**",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm run build --prefix frontend ",
+    "start": "npm run start --prefix backend ",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Bhavesh-Solminde/Chat-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Bhavesh-Solminde/Chat-app/issues"
+  },
+  "homepage": "https://github.com/Bhavesh-Solminde/Chat-app#readme"
+}
