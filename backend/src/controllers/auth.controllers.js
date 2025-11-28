@@ -1,12 +1,14 @@
 import { User } from "../models/User.js";
 import { generateToken } from "../lib/util.js";
 import bcrypt from "bcryptjs";
+import { sendWelcomeEmail } from "../emails/emailHandlers.js";
+import { ENV } from "../lib/env.js";
 
 export async function signupController(req, res) {
-  const { fullName, email, password } = req.body;
+  const { fullname, email, password } = req.body;
 
   try {
-    if (!fullName || !email || !password) {
+    if (!fullname || !email || !password) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
@@ -31,7 +33,7 @@ export async function signupController(req, res) {
     const hashedPass = await bcrypt.hash(password, salt);
 
     const newUser = new User({
-      fullname: fullName,
+      fullname: fullname,
       email,
       password: hashedPass,
     });
@@ -39,11 +41,18 @@ export async function signupController(req, res) {
     await newUser.save();
     generateToken(newUser._id, res);
 
-    return res.status(201).json({
+    res.status(201).json({
       _id: newUser._id,
       fullname: newUser.fullname,
       email: newUser.email,
     });
+    //todo: send welcome email
+
+    try {
+      await sendWelcomeEmail(newUser.email, newUser.fullname, ENV.CLIENT_URL);
+    } catch (err) {
+      console.error("Failed to send welcome email:", err);
+    }
   } catch (error) {
     console.error("Error in signupController:", error);
     res.status(500).json({ message: "Internal Server Error" });

@@ -1,0 +1,25 @@
+import dotenv from "dotenv";
+
+dotenv.config();
+
+export const ENV = {
+  CLIENT_URL: process.env.CLIENT_URL,
+  JWT_SECRET: process.env.JWT_SECRET,
+  MONGO_URI: process.env.MONGO_URI,
+  PORT: process.env.PORT,
+  NODE_ENV: process.env.NODE_ENV || "development",
+  RESEND_API_KEY: process.env.RESEND_API_KEY,
+  EMAIL_FROM: process.env.EMAIL_FROM,
+  EMAIL_FROM_NAME: process.env.EMAIL_FROM_NAME,
+};
+
+// PORT=3000
+// MONGO_URI=mongodb+srv://bhaveshsolminde_db_user:Yi3InUY9UOzz2xDu@cluster0.mw43ija.mongodb.net/chat-app_db?appName=Cluster0
+// JWT_SECRET=your_jwt_secret_key
+
+// NODE_ENV=development
+
+// RESEND_API_KEY=re_iYBfBg4G_DsAKjcr6N6sTXsKW1qaKGpJb
+
+// EMAIL_FROM="onboarding@resend.dev"
+// EMAIL_FROM_NAME="Bhavesh Solminde"
