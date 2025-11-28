@@ -5,7 +5,7 @@ export function createWelcomeEmailTemplate(name, clientURL) {
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to Messenger</title>
+    <title>Welcome to Chat-app</title>
   </head>
   <body style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f5f5f5;">
     <div style="background: linear-gradient(to right, #36D1DC, #5B86E5); padding: 30px; text-align: center; border-radius: 12px 12px 0 0;">
@@ -27,7 +27,7 @@ export function createWelcomeEmailTemplate(name, clientURL) {
       </div>
       
       <div style="text-align: center; margin: 30px 0;">
-        <a href=${clientURL} style="background: linear-gradient(to right, #36D1DC, #5B86E5); color: white; text-decoration: none; padding: 12px 30px; border-radius: 50px; font-weight: 500; display: inline-block;">Open Messenger</a>
+        <a href='${clientURL}' style="background: linear-gradient(to right, #36D1DC, #5B86E5); color: white; text-decoration: none; padding: 12px 30px; border-radius: 50px; font-weight: 500; display: inline-block;">Open Messenger</a>
       </div>
       
       <p style="margin-bottom: 5px;">If you need any help or have questions, we're always here to assist you.</p>
@@ -38,8 +38,8 @@ export function createWelcomeEmailTemplate(name, clientURL) {
     
     <div style="text-align: center; padding: 20px; color: #999; font-size: 12px;">
       <p>© 2025 Messenger. All rights reserved.</p>
-      <p>
-        <a href="#" style="color: #5B86E5; text-decoration: none; margin: 0 10px;">Privacy Policy</a>
+      <p>xt-decoration: none; margin: 0 10px;">Privacy Policy</a>
+        <a href="https://yourdomain.com/privacy-policy" style="color: #5B86E5; text-decoration: none; margin: 0 10px;">Privacy Policy</a>
         <a href="#" style="color: #5B86E5; text-decoration: none; margin: 0 10px;">Terms of Service</a>
         <a href="#" style="color: #5B86E5; text-decoration: none; margin: 0 10px;">Contact Us</a>
       </p>
