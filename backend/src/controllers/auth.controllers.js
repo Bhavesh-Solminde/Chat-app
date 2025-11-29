@@ -3,7 +3,7 @@ import { generateToken } from "../lib/util.js";
 import bcrypt from "bcryptjs";
 import { sendWelcomeEmail } from "../emails/emailHandlers.js";
 import { ENV } from "../lib/env.js";
-import { Profiler } from "react";
+import cloudinary from "../lib/cloudnary.js";
 
 export async function signupController(req, res) {
   const { fullname, email, password } = req.body;
@@ -69,7 +69,7 @@ export async function loginController(req, res) {
     }
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(400).json({ message: "User doesnot exists" }); //never tell that what is incorrect
+      return res.status(401).json({ message: "User doesnot exists" }); //never tell that what is incorrect
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
@@ -96,4 +96,33 @@ export async function logoutController(req, res) {
     secure: ENV.NODE_ENV === "production",
   });
   res.status(200).json({ message: "Logged out successfully" });
+}
+
+export async function updateProfileController(req, res) {
+  const { profilePic } = req.body;
+  try {
+    if (!profilePic) {
+      return res.status(400).json({ message: "Profile picture is required" });
+    }
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    await cloudinary.uploader.upload(profilePic, {
+      folder: "profile_pics",
+      public_id: `user_${user._id}`,
+      overwrite: true,
+    });
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user._id,
+      { profilePic: profilePic },
+      { new: true }
+    );
+    res
+      .status(200)
+      .json({ updatedUser, message: "Profile picture updated successfully" });
+  } catch (error) {
+    console.error("Error in updateProfileController:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 }
