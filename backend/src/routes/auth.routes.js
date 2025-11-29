@@ -5,13 +5,15 @@ import {
   logoutController,
   updateProfileController,
 } from "../controllers/auth.controllers.js";
-
 import { protectRoute } from "../middlewares/auth.middleware.js";
 import { arcjetProtection } from "../middlewares/arcjet.middleware.js";
+import { ENV } from "../lib/env.js";
 
 const Router = express.Router();
 
-Router.use(arcjetProtection);
+Router.use(
+  ENV.NODE_ENV === "production" ? arcjetProtection : (req, res, next) => next()
+);
 
 Router.post("/signup", signupController);
 
