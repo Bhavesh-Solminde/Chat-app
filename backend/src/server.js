@@ -15,9 +15,6 @@ app.use(cookieParser());
 
 app.use("/api/auth", authRouter);
 app.use("/api/message", messageRouter);
-//bhaveshsolminde_db_user
-//Yi3InUY9UOzz2xDu
-//mongodb+srv://bhaveshsolminde_db_user:Yi3InUY9UOzz2xDu@cluster0.mw43ija.mongodb.net/?appName=Cluster0
 
 if (NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/dist")));

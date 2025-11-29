@@ -43,14 +43,3 @@ if (missingEnvKeys.length) {
     .join(", ");
   throw new Error(`Missing required environment variables: ${details}`);
 }
-
-// PORT=3000
-// MONGO_URI=mongodb+srv://bhaveshsolminde_db_user:Yi3InUY9UOzz2xDu@cluster0.mw43ija.mongodb.net/chat-app_db?appName=Cluster0
-// JWT_SECRET=your_jwt_secret_key
-
-// NODE_ENV=development
-
-// RESEND_API_KEY=re_iYBfBg4G_DsAKjcr6N6sTXsKW1qaKGpJb
-
-// EMAIL_FROM="onboarding@resend.dev"
-// EMAIL_FROM_NAME="Bhavesh Solminde"
