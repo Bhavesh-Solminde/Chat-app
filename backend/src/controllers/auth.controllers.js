@@ -117,7 +117,7 @@ export async function updateProfileController(req, res) {
       req.user._id,
       { profilePic: profilePic },
       { new: true }
-    );
+    ).select("-password");
     res
       .status(200)
       .json({ updatedUser, message: "Profile picture updated successfully" });
