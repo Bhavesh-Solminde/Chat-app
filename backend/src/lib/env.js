@@ -14,7 +14,14 @@ export const ENV = {
   CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME,
   CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY,
   CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET,
+  ARCJET_KEY: process.env.ARCJET_KEY,
+  ARCJET_ENV: process.env.ARCJET_ENV || "development",
 };
+console.log(
+  "Loaded ENV variables:",
+  process.env.JWT_SECRET,
+  process.env.ARCJET_KEY
+);
 
 // PORT=3000
 // MONGO_URI=mongodb+srv://bhaveshsolminde_db_user:Yi3InUY9UOzz2xDu@cluster0.mw43ija.mongodb.net/chat-app_db?appName=Cluster0
