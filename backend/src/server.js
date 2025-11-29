@@ -4,6 +4,7 @@ import messageRouter from "./routes/message.routes.js";
 import path from "path";
 import { connectDB } from "./lib/db.js";
 import { ENV } from "./lib/env.js";
+import cookieParser from "cookie-parser";
 
 const requiredEnvVars = ["PORT", "MONGO_URI", "JWT_SECRET"];
 requiredEnvVars.forEach((name) => {
@@ -17,6 +18,7 @@ const __dirname = path.resolve();
 const { PORT, NODE_ENV } = ENV;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 app.use("/api/auth", authRouter);
 app.use("/api/message", messageRouter);
