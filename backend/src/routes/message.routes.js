@@ -7,6 +7,7 @@ import {
   sendMessage,
   getAllChats,
 } from "../controllers/message.controllers.js";
+import { validateObjectId } from "../middlewares/validateObjectId.js";
 
 const Router = express.Router();
 
@@ -19,7 +20,7 @@ Router.use(protectRoute);
 
 Router.get("/contacts", getAllContacts);
 Router.get("/chats", getAllChats);
-Router.get("/:id", getMessagesByUserId);
-Router.post("/send/:id", sendMessage);
+Router.get("/:id", validateObjectId("id"), getMessagesByUserId);
+Router.post("/send/:id", validateObjectId("id"), sendMessage);
 
 export default Router;
