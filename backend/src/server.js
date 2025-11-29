@@ -6,13 +6,6 @@ import { connectDB } from "./lib/db.js";
 import { ENV } from "./lib/env.js";
 import cookieParser from "cookie-parser";
 
-const requiredEnvVars = ["PORT", "MONGO_URI", "JWT_SECRET"];
-requiredEnvVars.forEach((name) => {
-  if (!ENV[name]) {
-    throw new Error(`Missing required environment variable: ${name}`);
-  }
-});
-
 const app = express();
 const __dirname = path.resolve();
 const { PORT, NODE_ENV } = ENV;

@@ -1,9 +1,9 @@
 import { ENV } from "./env.js";
 import arcjet, { shield, detectBot, slidingWindow } from "@arcjet/node";
-console.log("Initializing Arcjet with ENV:", ENV);
 
 const aj = arcjet({
   key: ENV.ARCJET_KEY,
+  environment: ENV.ARCJET_ENV,
   rules: [
     // Shield protects your app from common attacks e.g. SQL injection
     shield({ mode: "LIVE" }),
