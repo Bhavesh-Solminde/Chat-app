@@ -90,7 +90,7 @@ export async function loginController(req, res) {
 }
 
 export async function logoutController(req, res) {
-  res.clearCookie("token", {
+  res.clearCookie("jwt", {
     httpOnly: true,
     sameSite: "strict",
     secure: ENV.NODE_ENV === "production",
