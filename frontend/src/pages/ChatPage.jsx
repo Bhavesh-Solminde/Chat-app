@@ -1,10 +1,17 @@
 import React from "react";
-
+import { useAuthStore } from "../store/useAuthStore";
 const ChatPage = () => {
+  const { logout } = useAuthStore();
+  const handleLogout = () => {
+    logout();
+  };
   return (
-    <div>
-      <button z-index={100} className="btn btn-primary ">
-        My button
+    <div className="relative">
+      <button
+        onClick={handleLogout}
+        className="btn btn-primary fixed top-4 right-4 z-50"
+      >
+        Logout
       </button>
       <h1>ChatPage</h1>
     </div>
