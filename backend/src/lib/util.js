@@ -11,7 +11,7 @@ export function generateToken(userId, res) {
   const token = jwt.sign({ id: userId }, JWT_SECRET, {
     expiresIn: "7d",
   });
-  res.cookie("token", token, {
+  res.cookie("jwt", token, {
     httpOnly: true, // prevent XSS attacks
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     sameSite: "strict",
