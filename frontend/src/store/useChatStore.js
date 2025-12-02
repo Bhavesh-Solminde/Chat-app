@@ -12,17 +12,17 @@ export const useChatStore = create((set, get) => ({
   selectedUser: null,
   isUserLoading: false,
   isMessagesLoading: false,
-  isSoundUnbled: localStorage.getItem("isSoundEnabled") === "true",
+  isSoundEnabled: localStorage.getItem("isSoundEnabled") === "true",
   toggleSound: () => {
-    localStorage.setItem("isSoundEnabled", !get().isSoundUnbled);
-    set((state) => ({ isSoundUnbled: !state.isSoundUnbled }));
+    localStorage.setItem("isSoundEnabled", !get().isSoundEnabled);
+    set((state) => ({ isSoundEnabled: !state.isSoundEnabled }));
   },
   setActiveTab: (tab) => set({ activeTab: tab }),
   setSelectedUser: (user) => set({ selectedUser: user }),
   getAllContacts: async () => {
     set({ isUserLoading: true });
     try {
-      const res = await axios.get("/messages/contacts");
+      const res = await axiosInstance.get("/messages/contacts");
       set({ allContacts: res.data });
     } catch (error) {
       toast.error(
@@ -35,10 +35,11 @@ export const useChatStore = create((set, get) => ({
   getAllChatPartners: async () => {
     set({ isUserLoading: true });
     try {
-      const res = await axios.get("/messages/chats");
+      const res = await axiosInstance.get("/messages/chats");
       set({ chats: res.data });
     } catch (error) {
       toast.error(error.response?.data?.message || "Unable to fetch the chats");
+      console.error("Error fetching chat partners:", error);
     } finally {
       set({ isUserLoading: false });
     }

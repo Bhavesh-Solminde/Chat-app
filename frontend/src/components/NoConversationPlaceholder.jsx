@@ -1,7 +1,7 @@
 import React from "react";
 
 const NoConversationPlaceholder = () => {
-  return <div></div>;
+  return <div>NoConversationPlaceholder</div>;
 };
 
 export default NoConversationPlaceholder;

@@ -11,6 +11,7 @@ export function generateToken(userId, res) {
   const token = jwt.sign({ id: userId }, JWT_SECRET, {
     expiresIn: "7d",
   });
+  // Store the JWT in a consistently named cookie so middleware can read it
   res.cookie("jwt", token, {
     httpOnly: true, // prevent XSS attacks
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days

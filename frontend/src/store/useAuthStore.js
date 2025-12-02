@@ -8,8 +8,9 @@ export const useAuthStore = create((set) => ({
     set({ isCheckingAuth: true });
     try {
       const res = await axiosInstance.get("/auth/check");
-      if (res.data) {
-        set({ authUser: res.data });
+      const user = res.data?.user;
+      if (user) {
+        set({ authUser: user });
       } else {
         set({ authUser: null });
       }
@@ -36,14 +37,15 @@ export const useAuthStore = create((set) => ({
   },
   isLoggingIn: false,
   login: async (formData) => {
+    set({ isLoggingIn: true });
     try {
-      set({ isLoggingIn: true });
-      const res = await axios.post("/auth/login", formData);
+      const res = await axiosInstance.post("/auth/login", formData);
       set({ authUser: res.data });
-      toast.success("Logged In Successfully");
+      toast.success("Logged in successfully");
     } catch (error) {
+      console.error("Error during login:", error);
       toast.error(
-        error.response?.data?.message || "Unable to Login, Please try later"
+        error.response?.data?.message || "Unable to login, please try later"
       );
     } finally {
       set({ isLoggingIn: false });
@@ -57,6 +59,23 @@ export const useAuthStore = create((set) => ({
     } catch (error) {
       toast.error("Logout failed");
       console.error("Error during logout:", error);
+    }
+  },
+  isUpdatingProfile: false,
+  updateProfile: async (updatedData) => {
+    try {
+      set({ isUpdatingProfile: true });
+      const res = await axiosInstance.put("/auth/update-profile", updatedData);
+      const updatedUser = res.data?.updatedUser;
+      if (updatedUser) {
+        set({ authUser: updatedUser });
+      }
+      toast.success(res.data?.message || "Profile updated successfully");
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Upload failed");
+      console.error("Error updating profile:", err);
+    } finally {
+      set({ isUpdatingProfile: false });
     }
   },
 }));

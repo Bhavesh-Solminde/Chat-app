@@ -21,7 +21,7 @@ app.use(
 );
 
 app.use("/api/auth", authRouter);
-app.use("/api/message", messageRouter);
+app.use("/api/messages", messageRouter);
 
 if (NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
