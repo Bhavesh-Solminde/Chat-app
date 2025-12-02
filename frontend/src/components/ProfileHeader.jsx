@@ -1,15 +1,28 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useAuthStore } from "../store/useAuthStore";
 import { useChatStore } from "../store/useChatStore";
 import { LogOutIcon, Volume2Icon, VolumeOffIcon } from "lucide-react";
 import BorderAnimatedContainer from "./BorderAnimationContainer";
-const mouseClickSound = new Audio("/sounds/mouse-click.mp3");
 
 const ProfileHeader = () => {
   const { logout, authUser, updateProfile, isUpdatingProfile } = useAuthStore();
   const { isSoundEnabled, toggleSound } = useChatStore();
   const [selectedImg, setSelectedImg] = useState(null);
   const fileInputRef = useRef(null);
+  const clickSoundRef = useRef(null);
+
+  useEffect(() => {
+    const canUseAudio =
+      typeof window !== "undefined" && typeof Audio !== "undefined";
+    if (canUseAudio) {
+      clickSoundRef.current = new Audio("/sounds/mouse-click.mp3");
+    }
+  }, []);
+
+  if (!authUser) {
+    return null;
+  }
+
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -30,7 +43,7 @@ const ProfileHeader = () => {
           <div className="avatar online">
             <button
               className="size-14 rounded-full overflow-hidden relative group"
-              onClick={() => fileInputRef.current.click()}
+              onClick={() => fileInputRef.current?.click()}
             >
               {isUpdatingProfile ? (
                 <span className="z-10 loading loading-spinner loading-xs"></span>
@@ -80,11 +93,13 @@ const ProfileHeader = () => {
           <button
             className="text-slate-400 hover:text-slate-200 transition-colors"
             onClick={() => {
-              //play click sound before toggling
-              mouseClickSound.currentTime = 0; //reset to start
-              mouseClickSound
-                .play()
-                .catch((e) => console.error("Error playing sound:", e));
+              const clickSound = clickSoundRef.current;
+              if (clickSound) {
+                clickSound.currentTime = 0;
+                clickSound
+                  .play()
+                  .catch((e) => console.error("Error playing sound:", e));
+              }
               toggleSound();
             }}
           >
