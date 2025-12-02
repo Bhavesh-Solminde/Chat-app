@@ -53,7 +53,7 @@ export const getMessagesByUserId = async (req, res) => {
         { senderId: loggedInUserId, receiverId: otherUserId },
         { senderId: otherUserId, receiverId: loggedInUserId },
       ],
-    });
+    }).sort({ createdAt: 1 });
     res.status(200).json(messages);
   } catch (error) {
     console.error("Error in getMessagesByUserId:", error);
