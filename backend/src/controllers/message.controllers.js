@@ -34,6 +34,9 @@ export const getAllChats = async (req, res) => {
     const partners = await User.find({ _id: { $in: partnerIds } }).select(
       "-password"
     );
+    if (!partners) {
+      return res.status(404).json({ message: "No chat partners found." });
+    }
     res.status(200).json(partners);
   } catch (error) {
     console.error("Error in getAllChats:", error.message);
