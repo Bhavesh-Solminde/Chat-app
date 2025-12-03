@@ -72,7 +72,7 @@ export const useChatStore = create((set, get) => ({
       createdAt: new Date().toISOString(),
       isOptimistic: true,
     };
-    set({ messages: [...messages, OptimisticMessage] });
+    set((state) => ({ messages: [...state.messages, OptimisticMessage] }));
     try {
       const res = await axiosInstance.post(
         `/messages/send/${selectedUser._id}`,
