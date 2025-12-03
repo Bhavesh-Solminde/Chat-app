@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { useAuthStore } from "./useAuthStore.js";
 
 import { axiosInstance } from "../lib/axios.js";
 
@@ -56,6 +57,36 @@ export const useChatStore = create((set, get) => ({
       console.error("Error fetching messages:", error);
     } finally {
       set({ isMessagesLoading: false });
+    }
+  },
+  sendMessage: async (msgData) => {
+    const { selectedUser, messages } = get();
+    const { authUser } = useAuthStore.getState();
+    const tempId = `temp-${Date.now()}`;
+    const OptimisticMessage = {
+      _id: tempId,
+      senderId: authUser._id,
+      receiverId: selectedUser._id,
+      text: msgData.text,
+      image: msgData.image || null,
+      createdAt: new Date().toISOString(),
+      isOptimistic: true,
+    };
+    set({ messages: [...messages, OptimisticMessage] });
+    try {
+      const res = await axiosInstance.post(
+        `/messages/send/${selectedUser._id}`,
+        msgData
+      );
+      set({ messages: [...messages, res.data] });
+    } catch (error) {
+      set({
+        messages: messages.filter((msg) => msg._id !== tempId),
+      });
+      toast.error(
+        error.response?.data?.message || "Unable to send the message"
+      );
+      console.error("Error sending message:", error);
     }
   },
 }));

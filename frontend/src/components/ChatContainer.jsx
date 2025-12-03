@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useChatStore } from "../store/useChatStore";
 import { useAuthStore } from "../store/useAuthStore";
 import ChatHeader from "./ChatHeader.jsx";
@@ -10,6 +10,11 @@ const ChatContainer = () => {
     useChatStore();
   const { authUser } = useAuthStore();
   const contactName = selectedUser?.fullname || "your contact";
+  const messagesEndRef = useRef(null);
+
+  useEffect(() => {
+    messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   useEffect(() => {
     if (selectedUser?._id) {
@@ -65,6 +70,7 @@ const ChatContainer = () => {
         ) : (
           <NoChatHistoryPlaceholder name={contactName} />
         )}
+        <div ref={messagesEndRef} />
       </div>
     </>
   );
