@@ -89,4 +89,36 @@ export const useChatStore = create((set, get) => ({
       console.error("Error sending message:", error);
     }
   },
+  messageListener: null,
+  subscribeToNewMessages: () => {
+    const { selectedUser, messageListener } = get();
+    if (!selectedUser || messageListener) return;
+
+    const socket = useAuthStore.getState().socket;
+    if (!socket) return;
+
+    const handler = (newMessage) => {
+      const currentMessages = get().messages;
+      set({ messages: [...currentMessages, newMessage] });
+
+      if (get().isSoundEnabled) {
+        const notificationSound = new Audio("/sounds/notification.mp3");
+        notificationSound.currentTime = 0;
+        notificationSound.play().catch((e) => {
+          console.log("Audio play failed", e);
+        });
+      }
+    };
+
+    socket.on("newMessage", handler);
+    set({ messageListener: handler });
+  },
+  unsubscribeFromNewMessages: () => {
+    const { messageListener } = get();
+    const socket = useAuthStore.getState().socket;
+    if (!socket || !messageListener) return;
+
+    socket.off("newMessage", messageListener);
+    set({ messageListener: null });
+  },
 }));
