@@ -22,6 +22,15 @@ app.use(
 
 app.use("/api/auth", authRouter);
 app.use("/api/messages", messageRouter);
+// GLOBAL ERROR HANDLER (Add this BEFORE start or server.listen)
+app.use((err, req, res, next) => {
+  console.error("🔥 INTERNAL ERROR:", err);
+  res.status(500).json({
+    success: false,
+    message: "Internal Server Error",
+    error: err?.message,
+  });
+});
 
 if (NODE_ENV === "production") {
   // Use process.cwd() so path resolution works reliably on Render
