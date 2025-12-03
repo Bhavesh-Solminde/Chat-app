@@ -24,8 +24,12 @@ app.use("/api/auth", authRouter);
 app.use("/api/messages", messageRouter);
 
 if (NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../frontend/dist")));
+  // Use process.cwd() so path resolution works reliably on Render
+  const staticPath = path.join(process.cwd(), "frontend", "dist");
 
+  app.use(express.static(staticPath));
+
+  // universal fallback for SPA routes — safe on all Node/Express versions
   app.use((req, res) => {
     res.sendFile(path.join(staticPath, "index.html"));
   });
