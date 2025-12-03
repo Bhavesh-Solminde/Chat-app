@@ -6,8 +6,14 @@ import NoChatHistoryPlaceholder from "./NoChatHistoryPlaceholder.jsx";
 import MessagesLoadingSkeleton from "./MessagesLoadingSkeleton.jsx";
 
 const ChatContainer = () => {
-  const { selectedUser, getMessagesByUserId, messages, isMessagesLoading } =
-    useChatStore();
+  const {
+    selectedUser,
+    getMessagesByUserId,
+    messages,
+    isMessagesLoading,
+    subscribeToNewMessages,
+    unsubscribeFromNewMessages,
+  } = useChatStore();
   const { authUser } = useAuthStore();
   const contactName = selectedUser?.fullname || "your contact";
   const messagesEndRef = useRef(null);
@@ -20,7 +26,17 @@ const ChatContainer = () => {
     if (selectedUser?._id) {
       getMessagesByUserId(selectedUser._id);
     }
-  }, [selectedUser?._id, getMessagesByUserId]);
+    subscribeToNewMessages();
+    //cleanup on unmount or when selectedUser changes
+    return () => {
+      unsubscribeFromNewMessages();
+    };
+  }, [
+    selectedUser?._id,
+    getMessagesByUserId,
+    subscribeToNewMessages,
+    unsubscribeFromNewMessages,
+  ]);
 
   return (
     <>
