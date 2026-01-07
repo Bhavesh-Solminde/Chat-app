@@ -14,33 +14,41 @@ const ChatsList = () => {
   if (isUserLoading) return <UsersLoadingSkeleton />;
   if (chats.length === 0) return <NoChatsFound />;
   return (
-    <>
+    <div className="flex-1 overflow-y-auto">
       {chats.map((chat) => (
         <div
           key={chat._id}
-          className="bg-cyan-500/10 p-4 rounded-lg cursor-pointer hover:bg-cyan-500/20 transition-colors"
+          className="w-full p-3 flex items-center gap-3 hover:bg-muted/50 transition-colors cursor-pointer border-b border-border/50 last:border-0"
           onClick={() => setSelectedUser(chat)}
         >
-          <div className="flex items-center gap-3">
-            <div
-              className={`avatar ${
-                onlineUsers.includes(chat._id) ? "online" : "offline"
-              }`}
-            >
-              <div className="size-12 rounded-full">
-                <img
-                  src={chat.profilePic || "/avatar.png"}
-                  alt={chat.fullname}
-                />
-              </div>
+          <div className="relative">
+            <div className="w-12 h-12 rounded-full overflow-hidden">
+              <img
+                src={chat.profilePic || "/avatar.png"}
+                alt={chat.fullname}
+                className="w-full h-full object-cover"
+              />
             </div>
-            <h4 className="text-slate-200 font-medium truncate">
-              {chat.fullname}
-            </h4>
+            {onlineUsers.includes(chat._id) && (
+              <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full ring-2 ring-background" />
+            )}
+          </div>
+
+          <div className="flex-1 min-w-0">
+            <div className="flex justify-between items-baseline">
+              <h4 className="font-medium text-foreground truncate">
+                {chat.fullname}
+              </h4>
+              {/* Optional: Add time here if available in chat object */}
+            </div>
+            <p className="text-sm text-muted-foreground truncate">
+              {/* Optional: Add last message preview here */}
+              Click to chat
+            </p>
           </div>
         </div>
       ))}
-    </>
+    </div>
   );
 };
 
