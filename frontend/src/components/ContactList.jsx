@@ -13,34 +13,37 @@ const ContactList = () => {
 
   if (isUserLoading) return <UsersLoadingSkeleton />;
   return (
-    <>
+    <div className="flex-1 overflow-y-auto">
       {allContacts.map((contact) => (
         <div
           key={contact._id}
-          className="bg-cyan-500/10 p-4 rounded-lg cursor-pointer hover:bg-cyan-500/20 transition-colors"
+          className="w-full p-3 flex items-center gap-3 hover:bg-muted/50 transition-colors cursor-pointer border-b border-border/50 last:border-0"
           onClick={() => setSelectedUser(contact)}
         >
-          <div className="flex items-center gap-3">
-            {/* TODO: fix this online status and make it work with socket */}
-            <div
-              className={`avatar ${
-                onlineUsers.includes(contact._id) ? "online" : "offline"
-              }`}
-            >
-              <div className="size-12 rounded-full">
-                <img
-                  src={contact.profilePic || "/avatar.png"}
-                  alt={contact.fullname}
-                />
-              </div>
+          <div className="relative">
+            <div className="w-12 h-12 rounded-full overflow-hidden">
+              <img
+                src={contact.profilePic || "/avatar.png"}
+                alt={contact.fullname}
+                className="w-full h-full object-cover"
+              />
             </div>
-            <h4 className="text-slate-200 font-medium truncate">
+            {onlineUsers.includes(contact._id) && (
+              <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full ring-2 ring-background" />
+            )}
+          </div>
+
+          <div className="flex-1 min-w-0">
+            <h4 className="font-medium text-foreground truncate">
               {contact.fullname}
             </h4>
+            <p className="text-sm text-muted-foreground truncate">
+              {onlineUsers.includes(contact._id) ? "Online" : "Offline"}
+            </p>
           </div>
         </div>
       ))}
-    </>
+    </div>
   );
 };
 

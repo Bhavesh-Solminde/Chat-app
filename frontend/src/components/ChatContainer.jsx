@@ -49,33 +49,41 @@ const ChatContainer = () => {
               return (
                 <div
                   key={msg._id}
-                  className={`chat ${isSender ? "chat-end" : "chat-start"}`}
+                  className={`flex flex-col ${
+                    isSender ? "items-end" : "items-start"
+                  }`}
                 >
                   <div
-                    className={`chat-bubble relative ${
+                    className={`max-w-[80%] rounded-2xl px-4 py-2 shadow-sm relative ${
                       isSender
-                        ? "bg-cyan-600 text-white"
-                        : "bg-slate-800 text-slate-200"
+                        ? "bg-primary text-primary-foreground rounded-br-none"
+                        : "bg-secondary text-secondary-foreground rounded-bl-none"
                     }`}
                   >
                     {msg.image && (
                       <img
                         src={msg.image}
                         alt="Shared"
-                        className="rounded-lg h-48 object-cover"
+                        className="rounded-lg max-h-60 object-cover mb-2"
                       />
                     )}
                     {msg.text && (
-                      <p className={msg.image ? "mt-2" : undefined}>
+                      <p
+                        className={`text-sm leading-relaxed ${
+                          msg.image ? "mt-1" : ""
+                        }`}
+                      >
                         {msg.text}
                       </p>
                     )}
-                    <p className="text-xs mt-1 opacity-75 flex items-center gap-1">
+                    <div
+                      className={`text-[10px] mt-1 flex justify-end opacity-70`}
+                    >
                       {new Date(msg.createdAt).toLocaleTimeString(undefined, {
                         hour: "2-digit",
                         minute: "2-digit",
                       })}
-                    </p>
+                    </div>
                   </div>
                 </div>
               );
